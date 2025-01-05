@@ -8,6 +8,7 @@ class Reader:
             i = s.find("/")
             if i > -1:
                 s = s[:i]
+            return s.split(" ")
         
         file = open(self.file, "r")
         data = list(map(purify, file))
