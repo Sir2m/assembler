@@ -1,6 +1,7 @@
 class Reader:
-    def __init__(self, file):
+    def __init__(self, file, output):
         self.file = file
+        self.output = output
     
     def __enter__(self):
         def purify(s:str):
