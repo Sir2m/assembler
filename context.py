@@ -17,4 +17,8 @@ class Reader:
         return data
     
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        ...
+        file = open("results.txt", 'w')
+        for i in self.output:
+            file.write(i)
+            file.write("\n")
+        file.close()

@@ -55,10 +55,15 @@ def first_pass(instructions: list):
 
 
 def second_pass(instructions:list):
+    def twos_complement(num):
+        return (65535 + 1 - abs(num))
+    
     n = int(instructions[0][1])
     for i in range(1, len(instructions)):
         s = f"{(i+n-1):016b} "
-        if len(instructions[i]) == 1 and instructions[i][0] != "END":
+        if instructions[i][0] == "END":
+            return
+        elif len(instructions[i]) == 1 and instructions[i][0] != "END":
             hex = DATA["others"].get(instructions[i][0], "err")
             if hex == "err":
                 print("You have an error in the system")
@@ -74,11 +79,29 @@ def second_pass(instructions:list):
             num = DATA["labels"][instructions[i][1]]
             OUTPUT.append(s + f"{ini:04b}{num:012b}")
         else:
-            OUTPUT.append(f"just for test, i mean this is line {i}")
+            if instructions[i][0] == "DEC":
+                num = int(instructions[i][1])
+                if num < 0:
+                    num = twos_complement(num)
+                OUTPUT.append(s + f"{num:016b}")
+            elif instructions[i][0] == "HEX":
+                num = int(instructions[i][1], 16)
+                if num < 0:
+                    num = twos_complement(num)
+                OUTPUT.append(s + f"{num:016b}")
+            else:
+                init = DATA["mem_ref"].get(instructions[i][0], "err")
+                if init == "err":
+                    print("Wrong instruction")
+                    sys.exit(-1)
+                init = int(init[0])
+                num = DATA['labels'].get(instructions[i][1], 'err')
+                if num == "err":
+                    print("Wrong instruction")
+                    sys.exit(-1)
+                OUTPUT.append(s + f"{init:04b}{num:012b}")
 
 
 with Reader("example.txt", OUTPUT) as file:
     first_pass(file)
     second_pass(file)
-
-print(OUTPUT)
