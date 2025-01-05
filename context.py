@@ -4,10 +4,10 @@ class Reader:
     
     def __enter__(self):
         def purify(s:str):
-            s = s.strip()
             i = s.find("/")
             if i > -1:
                 s = s[:i]
+            s = s.strip()
             return s.split(" ")
         
         file = open(self.file, "r")
