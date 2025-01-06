@@ -46,7 +46,7 @@ def first_pass(instructions: list):
             sys.exit(1)
     else:
         print("Did you think about starting the program? using origin (ORG)")
-        sys.exit(-1)
+        sys.exit(1)
     
     for i in range(1, len(instructions)):
         if len(instructions[i]) > 2 and instructions[i][0][-1] == ",":
@@ -98,10 +98,14 @@ def second_pass(instructions:list):
                 num = DATA['labels'].get(instructions[i][1], 'err')
                 if num == "err":
                     print("Wrong instruction")
-                    sys.exit(-1)
+                    sys.exit(1)
                 OUTPUT.append(s + f"{init:04b}{num:012b}")
 
+if len(sys.argv) != 2:
+    print("program don't work like this")
+    print("python assembler.py [filename]")
+    sys.exit(1)
 
-with Reader("example.txt", OUTPUT) as file:
+with Reader(sys.argv[1], OUTPUT) as file:
     first_pass(file)
     second_pass(file)
