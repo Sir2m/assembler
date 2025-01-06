@@ -49,7 +49,7 @@ def first_pass(instructions: list):
         sys.exit(1)
     
     for i in range(1, len(instructions)):
-        if len(instructions[i]) > 2 and instructions[i][0][-1] == ",":
+        if len(instructions[i]) >= 2 and instructions[i][0][-1] == ",":
             DATA["labels"][instructions[i][0][:-1]] = i+n-1
             instructions[i].pop(0)
 
